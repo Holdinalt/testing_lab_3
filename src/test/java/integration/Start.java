@@ -16,34 +16,46 @@ import static org.junit.platform.engine.discovery.DiscoverySelectors.selectClass
 public class Start {
 
     public static void main(String[] args) {
+
         new Thread(new Runnable() {
             @Override
             public void run() {
                 runTest("chrome");
             }
         }).start();
+
         new Thread(new Runnable() {
             @Override
             public void run() {
                 runTest("firefox");
             }
         }).start();
+
+//        runTest("chrome");
+//        runTest("firefox");
     }
 
-    static SummaryGeneratingListener listener = new SummaryGeneratingListener();
 
     public static void runTest(String browser) {
+
+        System.out.println(browser);
+
+        SummaryGeneratingListener listener = new SummaryGeneratingListener();
+
         LauncherDiscoveryRequest request = LauncherDiscoveryRequestBuilder.request()
-                .selectors(selectClass(MainPage.class))
+                .selectors(selectClass(MainPageTest.class))
                 .configurationParameter("browser", browser)
                 .configurationParameter("junit.jupiter.execution.parallel.enabled", "true")
                 .configurationParameter("junit.jupiter.execution.parallel.mode.default", "concurrent")
                 .build();
+
         Launcher launcher = LauncherFactory.create();
         TestPlan testPlan = launcher.discover(request);
         launcher.registerTestExecutionListeners(listener);
         launcher.execute(request);
         listener.getSummary().printTo(new PrintWriter(System.out));
+
+        System.out.println(browser);
     }
 
 

@@ -36,7 +36,8 @@ dependencies {
 test {
     useJUnitPlatform()
     systemProperties([
+            'browser': 'chrome',
             'junit.jupiter.execution.parallel.enabled': 'true',
-            'junit.jupiter.execution.parallel.mode.default': 'concurrent'
+            'junit.jupiter.execution.parallel.mode.default': 'concurrent',
     ])
 }
