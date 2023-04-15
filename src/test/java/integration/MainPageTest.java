@@ -21,7 +21,6 @@ import java.time.Duration;
 
 @ExtendWith(DriverExtension.class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-@ConfigurationParameter(key = "browser", value = "chrome")
 public class MainPageTest{
 
     private String browser = null;
@@ -34,23 +33,21 @@ public class MainPageTest{
 
     @BeforeAll
     public void initDriver() throws MalformedURLException {
-//        AbstractDriverOptions options = new ChromeOptions();
+        AbstractDriverOptions options = new ChromeOptions();
 
 //        System.out.println(browser + " beforall");
 
-//        if (browser.equalsIgnoreCase("Chrome")) {
-//            options = new ChromeOptions();
-//        }
-//        else if (browser.equalsIgnoreCase("Firefox")) {
-//            options = new FirefoxOptions();
-//        }
+        if (browser.equalsIgnoreCase("Chrome")) {
+            options = new ChromeOptions();
+        }
+        else if (browser.equalsIgnoreCase("Firefox")) {
+            options = new FirefoxOptions();
+        }
 
 //        driver = new RemoteWebDriver(new URL("http://localhost:4444/wd/hub"), options);
 //        driver.manage().window().maximize();
 //        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
 //        driver.get("https://www.jetbrains.com/");
-
-//        System.out.println(browser);
 
 //        mainPage = new MainPage(driver);
     }
