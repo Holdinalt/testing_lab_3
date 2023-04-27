@@ -7,17 +7,14 @@ import org.openqa.selenium.support.PageFactory;
 
 // page_url = https://www.jetbrains.com/
 public class MainPage {
-    @FindBy(xpath = "//*[@data-test-marker='Developer Tools']")
-    public WebElement seeDeveloperToolsButton;
+    @FindBy(xpath = "//div[@class='TextInput__input TextInput__input_r8 SearchLineSuggest__inputControl']/span[@class='TextInput__box']/div[@class='TextInput__inputWrap']/input[@class='TextInput__control']")
+    public WebElement searchInput;
 
-    @FindBy(xpath = "//*[@data-test='suggestion-action']")
-    public WebElement findYourToolsButton;
+    @FindBy(xpath = "//div[@class='IndexMarks__col'][1]/a[@class='IndexMarks__item'][2]/div[@class='IndexMarks__item-name']")
+    public WebElement audiFilterButton;
 
-    @FindBy(xpath = "//div[@data-test='main-menu-item' and @data-test-marker = 'Developer Tools']")
-    public WebElement toolsMenu;
-
-    @FindBy(css = "[data-test='site-header-search-action']")
-    public WebElement searchButton;
+//    @FindBy(xpath = "")
+//    public WebElement a;
 
     public MainPage(WebDriver driver) {
         PageFactory.initElements(driver, this);
