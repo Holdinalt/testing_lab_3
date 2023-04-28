@@ -7,6 +7,29 @@ import org.openqa.selenium.support.PageFactory;
 
 // page_url = https://auto.ru/cars/used/sale/vaz/2113/1118531540-a228d302/
 public class SalePage {
+
+    public String testAvailability = "В наличии";
+    public String testYearOfManufacture = "2010";
+    public String testKmAge = "150 000 км";
+    public String testBodyType = "хэтчбек 3 дв.";
+    public String testColor = "серый";
+    public String testEngine = "1.6 л / 81 л.с. / Бензин";
+    public String testTransportTax = "972 ₽ / год";
+    public String testTransmission = "механическая";
+    public String testDrive = "передний";
+    public String testWheel = "Левый";
+    public String testState = "Не требует ремонта";
+    public String testOwnersCount = "3 или более";
+    public String testPts = "Оригинал";
+    public String testCustoms = "Растаможен";
+    public String testExchange = "Рассмотрю варианты";
+    public String testTitle = "LADA (ВАЗ) 2113, 2010";
+    public String testID = "№ 1118531540";
+    public String testPrice = "135 000 ₽";
+    public String testSellerName = "Михаил";
+    public String testDescription = "Без вложений по ходовой\nЧистая по документам\nНе гнилая вообще";
+
+
     @FindBy(xpath = "//li[@class='CardInfoRow CardInfoRow_availability']/span[@class='CardInfoRow__cell'][2]")
     public WebElement availability;
 
