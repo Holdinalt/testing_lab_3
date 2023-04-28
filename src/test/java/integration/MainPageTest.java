@@ -70,7 +70,6 @@ public class MainPageTest{
 //    }
 
     @Nested
-    @TestInstance(TestInstance.Lifecycle.PER_CLASS)
     class Search{
 
         private  MainPage mainPage;
@@ -79,7 +78,7 @@ public class MainPageTest{
         public void goSearchPage(){
             driver.get("https://auto.ru/");
 
-            driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(3));
+            driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(1));
             try{
                 Advertising advertising = new Advertising(driver);
                 advertising.adCloseButton.click();
@@ -95,8 +94,6 @@ public class MainPageTest{
             final String search = "LADA";
 
             mainPage.searchInput.sendKeys(search);
-//            mainPage.searchInput.click();
-            driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(3));
 
             try{
                 Advertising advertising = new Advertising(driver);
@@ -106,7 +103,7 @@ public class MainPageTest{
             mainPage.searchInput.sendKeys(Keys.ARROW_DOWN);
             mainPage.searchInput.sendKeys(Keys.ENTER);
 
-            driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+            driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(3));
 
             searchPage = new SearchPage(driver);
 
@@ -117,7 +114,7 @@ public class MainPageTest{
         public void filterAbleAudi(){
             mainPage.audiFilterButton.click();
 
-            driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(3));
+            driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(1));
 
             try{
                 Advertising advertising = new Advertising(driver);
