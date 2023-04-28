@@ -11,7 +11,7 @@ public class SearchPage {
     @FindBy(xpath = "//div[@class='ListingItem ListingItem_ctbautoru128Exp'][1]/div[@class='ListingItem__main']/div[@class='ListingItem__description']/div[@class='ListingItem__summary']/h3")
     public WebElement firstSearchCar;
 
-    public SearchPage(WebDriver driver) {
+    public SearchPage(final WebDriver driver) {
         PageFactory.initElements(driver, this);
     }
 }

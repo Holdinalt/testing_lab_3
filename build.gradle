@@ -1,5 +1,7 @@
 plugins {
     id 'java'
+    id 'pmd'
+    id 'jacoco'
 }
 
 group 'com.example'
@@ -40,4 +42,71 @@ test {
             'junit.jupiter.execution.parallel.enabled': 'true',
             'junit.jupiter.execution.parallel.mode.default': 'concurrent',
     ])
+
+    dependsOn pmdMain, pmdTest
+    finalizedBy jacocoTestReport
+    finalizedBy jacocoTestCoverageVerification
 }
+
+pmd {
+    consoleOutput = true
+    toolVersion = "6.54.0"
+    ruleSetFiles = files("config/pmd.xml") // Исключения только через внешний файл
+    ruleSets = []
+    pmdMain {
+        excludes = [
+                '**/Start.*',
+                '**/jivesoftware/.*'
+        ]
+    }
+}
+
+
+jacocoTestReport {
+    reports {
+        html.enabled true
+    }
+}
+jacocoTestCoverageVerification {
+    dependsOn test
+
+    afterEvaluate {
+        classDirectories.setFrom(files(classDirectories.files.collect {
+            fileTree(dir: it, exclude: [
+//                    'testing_lab_3/src/test/java/integration/Start.class'
+            ])
+        }))
+    }
+
+    violationRules {
+        rule {
+            limit {
+                counter = 'CLASS'
+                value = 'COVEREDRATIO'
+                minimum = 0.9
+            }
+        }
+        rule {
+            limit {
+                counter = 'METHOD'
+                value = 'COVEREDRATIO'
+                minimum = 0.9
+            }
+        }
+        rule {
+            limit {
+                counter = 'LINE'
+                value = 'COVEREDRATIO'
+                minimum = 0.9
+            }
+        }
+        rule {
+            limit {
+                counter = 'INSTRUCTION'
+                value = 'COVEREDRATIO'
+                minimum = 0.9
+            }
+        }
+    }
+}
+check.dependsOn jacocoTestReport, jacocoTestCoverageVerification

@@ -16,7 +16,7 @@ public class MainPage {
 //    @FindBy(xpath = "")
 //    public WebElement a;
 
-    public MainPage(WebDriver driver) {
+    public MainPage(final WebDriver driver) {
         PageFactory.initElements(driver, this);
     }
 }

@@ -90,7 +90,7 @@ public class SalePage {
     @FindBy(xpath = "//div[@class='CardDescriptionHTML']/span")
     public WebElement description;
 
-    public SalePage(WebDriver driver) {
+    public SalePage(final WebDriver driver) {
         PageFactory.initElements(driver, this);
     }
 }

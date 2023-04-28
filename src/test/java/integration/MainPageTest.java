@@ -24,33 +24,34 @@ import java.util.HashMap;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class MainPageTest{
 
-    private String browser = null;
+    private final String browser;
     private WebDriver driver;
 
-    public MainPageTest(String browserConst){
+    public MainPageTest(final String browserConst){
         browser = browserConst;
     }
 
     @BeforeAll
-    public void initDriver() throws MalformedURLException {
+    void initDriver() throws MalformedURLException {
+
         AbstractDriverOptions options = new ChromeOptions();
 
-//        System.out.println(browser + " beforall");
-
-        if (browser.equalsIgnoreCase("Chrome")) {
+        if ("Chrome".equalsIgnoreCase(browser)) {
             options = new ChromeOptions();
         }
-        else if (browser.equalsIgnoreCase("Firefox")) {
+        else if ("Firefox".equalsIgnoreCase(browser)) {
             options = new FirefoxOptions();
         }
 
-        options.setCapability("selenoid:options", new HashMap<String, Object>() {{
-            /* How to set session timeout */
-            put("sessionTimeout", "0.5m");
-            put("enableVNC", true);
-            put("enableVideo", true);
-            put("videoName", "last test");
-        }});
+        final HashMap<String, Object> capabilityMap = new HashMap<>();
+        capabilityMap.put("sessionTimeout", "0.5m");
+        capabilityMap.put("enableVNC", true);
+        capabilityMap.put("enableVideo", true);
+        capabilityMap.put("videoName", "last test");
+
+        options.setCapability("selenoid:options", capabilityMap);
+
+
 
         driver = new RemoteWebDriver(new URL("http://localhost:4444/wd/hub"), options);
         driver.manage().window().maximize();
@@ -75,12 +76,12 @@ public class MainPageTest{
         private  MainPage mainPage;
 
         @BeforeEach
-        public void goSearchPage(){
+        void goSearchPage(){
             driver.get("https://auto.ru/");
 
             driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(1));
             try{
-                Advertising advertising = new Advertising(driver);
+                final Advertising advertising = new Advertising(driver);
                 advertising.adCloseButton.click();
             }catch (Exception ignored){}
 
@@ -88,7 +89,7 @@ public class MainPageTest{
         }
 
         @Test
-        public void searchAble(){
+        void searchAble(){
 
             SearchPage searchPage;
             final String search = "LADA";
@@ -96,7 +97,7 @@ public class MainPageTest{
             mainPage.searchInput.sendKeys(search);
 
             try{
-                Advertising advertising = new Advertising(driver);
+                final Advertising advertising = new Advertising(driver);
                 advertising.adCloseButton.click();
             }catch (Exception ignored){}
 
@@ -111,17 +112,17 @@ public class MainPageTest{
         }
 
         @Test
-        public void filterAbleAudi(){
+        void filterAbleAudi(){
             mainPage.audiFilterButton.click();
 
             driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(1));
 
             try{
-                Advertising advertising = new Advertising(driver);
+                final Advertising advertising = new Advertising(driver);
                 advertising.adCloseButton.click();
             }catch (Exception ignored){}
 
-            SearchPage searchPage = new SearchPage(driver);
+            final SearchPage searchPage = new SearchPage(driver);
 
             Assertions.assertTrue(searchPage.firstSearchCar.getText().contains("Audi"));
         }
@@ -142,102 +143,102 @@ public class MainPageTest{
         }
 
         @Test
-        public void title(){
+        void title(){
             Assertions.assertEquals(salePage.title.getText(), salePage.testTitle);
         }
 
         @Test
-        public void sellerName(){
+        void sellerName(){
             Assertions.assertEquals(salePage.sellerName.getText(), salePage.testSellerName);
         }
 
         @Test
-        public void price(){
+        void price(){
             Assertions.assertEquals(salePage.price.getText(), salePage.testPrice);
         }
 
         @Test
-        public void availability(){
+        void availability(){
             Assertions.assertEquals(salePage.availability.getText(), salePage.testAvailability);
         }
 
         @Test
-        public void yearOfManufacture(){
+        void yearOfManufacture(){
             Assertions.assertEquals(salePage.yearOfManufacture.getText(), salePage.testYearOfManufacture);
         }
 
         @Test
-        public void kmAge(){
+        void kmAge(){
             Assertions.assertEquals(salePage.kmAge.getText(), salePage.testKmAge);
         }
 
         @Test
-        public void bodyType(){
+        void bodyType(){
             Assertions.assertEquals(salePage.bodyType.getText(), salePage.testBodyType);
         }
 
         @Test
-        public void color(){
+        void color(){
             Assertions.assertEquals(salePage.color.getText(), salePage.testColor);
         }
 
         @Test
-        public void engine(){
+        void engine(){
             Assertions.assertEquals(salePage.engine.getText(), salePage.testEngine);
         }
 
         @Test
-        public void transportTax(){
+        void transportTax(){
             Assertions.assertEquals(salePage.transportTax.getText(), salePage.testTransportTax);
         }
 
         @Test
-        public void transmission(){
+        void transmission(){
             Assertions.assertEquals(salePage.transmission.getText(), salePage.testTransmission);
         }
 
         @Test
-        public void wheel(){
+        void wheel(){
             Assertions.assertEquals(salePage.wheel.getText(), salePage.testWheel);
         }
 
         @Test
-        public void state(){
+        void state(){
             Assertions.assertEquals(salePage.state.getText(), salePage.testState);
         }
 
         @Test
-        public void ownersCount(){
+        void ownersCount(){
             Assertions.assertEquals(salePage.ownersCount.getText(), salePage.testOwnersCount);
         }
 
         @Test
-        public void pts(){
+        void pts(){
             Assertions.assertEquals(salePage.pts.getText(), salePage.testPts);
         }
 
         @Test
-        public void customs(){
+        void customs(){
             Assertions.assertEquals(salePage.customs.getText(), salePage.testCustoms);
         }
 
         @Test
-        public void exchange(){
+        void exchange(){
             Assertions.assertEquals(salePage.exchange.getText(), salePage.testExchange);
         }
 
         @Test
-        public void description(){
+        void description(){
             Assertions.assertEquals(salePage.description.getText(), salePage.testDescription);
         }
 
         @Test
-        public void drive(){
+        void drive(){
             Assertions.assertEquals(salePage.drive.getText(), salePage.testDrive);
         }
 
         @Test
-        public void id(){
+        void id(){
             Assertions.assertEquals(salePage.id.getText(), salePage.testID);
         }
     }

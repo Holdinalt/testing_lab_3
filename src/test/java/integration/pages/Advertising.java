@@ -10,7 +10,7 @@ public class Advertising{
     @FindBy(xpath = "//div[@class='Modal Modal_visible Modal_has-animation']/div[@class='Modal__container']/div[@class='Modal__closer']")
     public WebElement adCloseButton;
 
-    public Advertising(WebDriver driver) {
+    public Advertising(final WebDriver driver) {
         PageFactory.initElements(driver, this);
     }
 }
