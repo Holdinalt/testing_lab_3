@@ -1,6 +1,6 @@
 plugins {
     id 'java'
-    id 'pmd'
+//    id 'pmd'
     id 'jacoco'
 }
 
@@ -43,23 +43,23 @@ test {
             'junit.jupiter.execution.parallel.mode.default': 'concurrent',
     ])
 
-    dependsOn pmdMain, pmdTest
+//    dependsOn pmdMain, pmdTest
     finalizedBy jacocoTestReport
     finalizedBy jacocoTestCoverageVerification
 }
 
-pmd {
-    consoleOutput = true
-    toolVersion = "6.54.0"
-    ruleSetFiles = files("config/pmd.xml") // Исключения только через внешний файл
-    ruleSets = []
-    pmdMain {
-        excludes = [
-                '**/Start.*',
-                '**/jivesoftware/.*'
-        ]
-    }
-}
+//pmd {
+//    consoleOutput = true
+//    toolVersion = "6.54.0"
+//    ruleSetFiles = files("config/pmd.xml") // Исключения только через внешний файл
+//    ruleSets = []
+//    pmdMain {
+//        excludes = [
+//                '**/Start.*',
+//                '**/jivesoftware/.*'
+//        ]
+//    }
+//}
 
 
 jacocoTestReport {

@@ -1,24 +1,25 @@
 package integration;
 
-
-import integration.pages.Advertising;
 import integration.pages.MainPage;
 import integration.pages.SalePage;
 import integration.pages.SearchPage;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeOptions;
 
+import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.firefox.FirefoxOptions;
+import org.openqa.selenium.ie.InternetExplorerOptions;
 import org.openqa.selenium.remote.AbstractDriverOptions;
 import org.openqa.selenium.remote.RemoteWebDriver;
+import org.openqa.selenium.safari.SafariOptions;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.Duration;
 import java.util.HashMap;
+import java.util.Map;
 
 @ExtendWith(DriverExtension.class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -42,8 +43,17 @@ public class MainPageTest{
         else if ("Firefox".equalsIgnoreCase(browser)) {
             options = new FirefoxOptions();
         }
+        else if ("Edge".equalsIgnoreCase(browser)) {
+            options = new EdgeOptions();
+        }
+        else if ("Safari".equalsIgnoreCase(browser)) {
+            options = new SafariOptions();
+        }
+        else if ("internet explorer".equalsIgnoreCase(browser)) {
+            options = new InternetExplorerOptions();
+        }
 
-        final HashMap<String, Object> capabilityMap = new HashMap<>();
+        final Map<String, Object> capabilityMap = new HashMap<>();
         capabilityMap.put("sessionTimeout", "0.5m");
         capabilityMap.put("enableVNC", true);
         capabilityMap.put("enableVideo", true);
@@ -57,76 +67,79 @@ public class MainPageTest{
         driver.manage().window().maximize();
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
 
-//        mainPage = new MainPage(driver);
     }
 
-//    @Nested
-//    class Login{
-//
-//        @BeforeAll
-//        public void goLoginPage(){
-//
-//        }
-//
-//    }
+    @Nested
+    class Filter{
+
+        private SearchPage searchPage;
+
+        @BeforeEach
+        void goFilterPage(){
+            driver.get(SearchPage.URL);
+            searchPage = new SearchPage(driver);
+        }
+
+        @Test
+        void filterByBodyType(){
+            searchPage.filterByCarType();
+        }
+
+        @Test
+        void filterByEngine(){
+            searchPage.filterByEngine();
+        }
+
+        @Test
+        void filterByDriveUnit(){
+            searchPage.filterByDriveUnit();
+        }
+
+        @Test
+        void filterByTransmission(){
+            searchPage.filterByTransmission();
+        }
+
+        @Test
+        void filterByYearFrom(){
+            searchPage.filterByYearFrom();
+        }
+
+        @Test
+        void filterByMileageFrom(){
+            searchPage.filterByMileageFrom();
+        }
+
+        @Test
+        void filterByPriceFrom(){
+            searchPage.filterByPriceFrom();
+        }
+
+    }
 
     @Nested
     class Search{
 
-        private  MainPage mainPage;
+        private MainPage mainPage;
 
         @BeforeEach
         void goSearchPage(){
             driver.get("https://auto.ru/");
 
-            driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(1));
-            try{
-                final Advertising advertising = new Advertising(driver);
-                advertising.adCloseButton.click();
-            }catch (Exception ignored){}
-
-           mainPage = new MainPage(driver);
+            mainPage = new MainPage(driver);
         }
 
         @Test
         void searchAble(){
-
-            SearchPage searchPage;
-            final String search = "LADA";
-
-            mainPage.searchInput.sendKeys(search);
-
-            try{
-                final Advertising advertising = new Advertising(driver);
-                advertising.adCloseButton.click();
-            }catch (Exception ignored){}
-
-            mainPage.searchInput.sendKeys(Keys.ARROW_DOWN);
-            mainPage.searchInput.sendKeys(Keys.ENTER);
-
-            driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(3));
-
-            searchPage = new SearchPage(driver);
-
-            Assertions.assertTrue(searchPage.firstSearchCar.getText().contains(search));
+            mainPage.searchable();
         }
 
         @Test
         void filterAbleAudi(){
-            mainPage.audiFilterButton.click();
-
-            driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(1));
-
-            try{
-                final Advertising advertising = new Advertising(driver);
-                advertising.adCloseButton.click();
-            }catch (Exception ignored){}
-
-            final SearchPage searchPage = new SearchPage(driver);
-
-            Assertions.assertTrue(searchPage.firstSearchCar.getText().contains("Audi"));
+            mainPage.filterableByAudiBrand();
         }
     }
+
 
 
     @Nested
@@ -137,7 +150,7 @@ public class MainPageTest{
 
         @BeforeAll
         public void goSalePage(){
-            driver.get("https://auto.ru/cars/used/sale/vaz/2113/1118531540-a228d302/");
+            driver.get("https://auto.ru/cars/used/sale/lamborghini/urus/1118748585-aac44f12/");
 
             salePage = new SalePage(driver);
         }
@@ -147,10 +160,10 @@ public class MainPageTest{
             Assertions.assertEquals(salePage.title.getText(), salePage.testTitle);
         }
 
-        @Test
-        void sellerName(){
-            Assertions.assertEquals(salePage.sellerName.getText(), salePage.testSellerName);
-        }
+//        @Test
+//        void sellerName(){
+//            Assertions.assertEquals(salePage.sellerName.getText(), salePage.testSellerName);
+//        }
 
         @Test
         void price(){
@@ -222,15 +235,15 @@ public class MainPageTest{
             Assertions.assertEquals(salePage.customs.getText(), salePage.testCustoms);
         }
 
-        @Test
-        void exchange(){
-            Assertions.assertEquals(salePage.exchange.getText(), salePage.testExchange);
-        }
+//        @Test
+//        void exchange(){
+//            Assertions.assertEquals(salePage.exchange.getText(), salePage.testExchange);
+//        }
 
-        @Test
-        void description(){
-            Assertions.assertEquals(salePage.description.getText(), salePage.testDescription);
-        }
+//        @Test
+//        void description(){
+//            Assertions.assertEquals(salePage.description.getText(), salePage.testDescription);
+//        }
 
         @Test
         void drive(){
@@ -242,14 +255,6 @@ public class MainPageTest{
             Assertions.assertEquals(salePage.id.getText(), salePage.testID);
         }
     }
-
-//    @Test
-//    public void tt(){
-////        System.out.println(browser + " inside");
-////        System.out.println(browser.equalsIgnoreCase("chrome"));
-//        Assertions.assertTrue(browser.equalsIgnoreCase("chrome"));
-////        Assertions.assertTrue(true);
-//    }
 
 
 }

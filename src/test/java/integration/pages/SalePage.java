@@ -5,29 +5,37 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
-// page_url = https://auto.ru/cars/used/sale/vaz/2113/1118531540-a228d302/
+// page_url = https://auto.ru/cars/used/sale/lamborghini/urus/1118748585-aac44f12/
 public class SalePage {
 
-    public String testAvailability = "В наличии";
-    public String testYearOfManufacture = "2010";
-    public String testKmAge = "150 000 км";
-    public String testBodyType = "хэтчбек 3 дв.";
+    public String testAvailability = "На заказ";
+    public String testYearOfManufacture = "2019";
+    public String testKmAge = "82 000 км";
+    public String testBodyType = "внедорожник 5 дв.";
     public String testColor = "серый";
-    public String testEngine = "1.6 л / 81 л.с. / Бензин";
-    public String testTransportTax = "972 ₽ / год";
-    public String testTransmission = "механическая";
-    public String testDrive = "передний";
+    public String testEngine = "4.0 л / 650 л.с. / Бензин";
+    public String testTransportTax = "219 375 ₽ / год";
+    public String testTransmission = "автоматическая";
+    public String testDrive = "полный";
     public String testWheel = "Левый";
     public String testState = "Не требует ремонта";
-    public String testOwnersCount = "3 или более";
+    public String testOwnersCount = "1 владелец";
     public String testPts = "Оригинал";
     public String testCustoms = "Растаможен";
-    public String testExchange = "Рассмотрю варианты";
-    public String testTitle = "LADA (ВАЗ) 2113, 2010";
-    public String testID = "№ 1118531540";
-    public String testPrice = "135 000 ₽";
-    public String testSellerName = "Михаил";
-    public String testDescription = "Без вложений по ходовой\nЧистая по документам\nНе гнилая вообще";
+//    public String testExchange = "Рассмотрю варианты";
+    public String testTitle = "Lamborghini Urus, 2019";
+    public String testID = "№ 1118748585";
+    public String testPrice = "18 000 000 ₽";
+    public String testSellerName = "legocar125";
+    public String testDescription = "Автомобили под заказ из Южной Кореи. Выбор огромный, различных авто.\n" +
+            "Возможны разные варианты по комплектации.\n" +
+            "Доставка по всей России!\n" +
+            "\n" +
+            "Внимание! Цена указана с учетом текущего курса и может варьироваться, как в большую, так и в меньшую сторону.\n" +
+            "\n" +
+            "Расчет принимаем в любой валюте.\n" +
+            "\n" +
+            "Ввоз подержанных автомобилей из Японии, США, Китая и Кореи не ограничен. Предоставим";
 
 
     @FindBy(xpath = "//li[@class='CardInfoRow CardInfoRow_availability']/span[@class='CardInfoRow__cell'][2]")
