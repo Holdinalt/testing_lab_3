@@ -19,6 +19,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.Duration;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 @ExtendWith(DriverExtension.class)
@@ -82,37 +84,48 @@ public class MainPageTest{
 
         @Test
         void filterByBodyType(){
-            searchPage.filterByCarType();
+            Assertions.assertEquals(searchPage.filterByCarType(), new SalePage(driver).bodyType.getText().toLowerCase(Locale.ROOT));
         }
 
         @Test
         void filterByEngine(){
-            searchPage.filterByEngine();
+
+            final String choice = searchPage.filterByEngine();
+
+            final String[] dataSplit = new SalePage(driver).engine.getText().toLowerCase(Locale.ROOT).split("/");
+
+            Assertions.assertEquals(choice, dataSplit[2].trim());
         }
 
         @Test
         void filterByDriveUnit(){
-            searchPage.filterByDriveUnit();
+            Assertions.assertEquals(searchPage.filterByDriveUnit().toLowerCase(Locale.ROOT), new SalePage(driver).drive.getText().toLowerCase(Locale.ROOT));
         }
 
         @Test
         void filterByTransmission(){
-            searchPage.filterByTransmission();
+            Assertions.assertTrue(List.of(new String[]{"автоматическая", "автомат", "робот", "вариатор"}).contains(searchPage.filterByTransmission()));
         }
 
         @Test
         void filterByYearFrom(){
-            searchPage.filterByYearFrom();
+            Assertions.assertTrue(searchPage.filterByYearFrom() <= Integer.parseInt(new SalePage(driver).yearOfManufacture.getText()));
         }
 
         @Test
         void filterByMileageFrom(){
-            searchPage.filterByMileageFrom();
+
+            final int mileage = 200_000;
+
+            Assertions.assertTrue(mileage <= searchPage.filterByMileageFrom(String.valueOf(mileage)));
         }
 
         @Test
         void filterByPriceFrom(){
-            searchPage.filterByPriceFrom();
+
+            final int price = 2_000_000;
+
+            Assertions.assertTrue(price <= searchPage.filterByPriceFrom(String.valueOf(price)));
         }
 
     }
@@ -131,12 +144,19 @@ public class MainPageTest{
 
         @Test
         void searchAble(){
-            mainPage.searchable();
+
+            final String searchTitle = mainPage.searchable();
+
+            Assertions.assertTrue(new SearchPage(driver).firstSearchCar.getText().contains(searchTitle));
         }
 
         @Test
         void filterAbleAudi(){
-            mainPage.filterableByAudiBrand();
+            mainPage.audiFilterButton.click();
+
+            final SearchPage searchPage = new SearchPage(driver);
+
+            Assertions.assertTrue(searchPage.firstSearchCar.getText().contains("Audi"));
         }
     }
 

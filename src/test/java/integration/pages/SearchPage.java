@@ -1,6 +1,5 @@
 package integration.pages;
 
-import org.junit.jupiter.api.Assertions;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
@@ -10,10 +9,9 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import java.lang.reflect.Array;
 import java.time.Duration;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Locale;
 
 // page_url = https://auto.ru/cars/used/sale/lamborghini/urus/1118748585-aac44f12/
 public class SearchPage {
@@ -60,7 +58,11 @@ public class SearchPage {
 
     void waitUntilPageLoad(){
         new WebDriverWait(driver, Duration.ofSeconds(3)).until(
-                webDriver -> ((JavascriptExecutor) webDriver).executeScript("return document.readyState").equals("complete"));
+//                webDriver -> ((JavascriptExecutor) webDriver).executeScript("return document.readyState").equals("complete"));
+                webDriver -> {
+                    final String ans = (String) ((JavascriptExecutor) webDriver).executeScript("return document.readyState");
+                    return "complete".equals(ans);
+                });
     }
 
     void waitUntilCarStartLoad(){
@@ -84,13 +86,13 @@ public class SearchPage {
     void goLastTab(){
 
         driver.close();
-        ArrayList<String> tabs = new ArrayList<>(driver.getWindowHandles());
+        final ArrayList<String> tabs = new ArrayList<>(driver.getWindowHandles());
         driver.switchTo().window(tabs.get(0));
 
     }
 
     private String goToFirstPageAfterInputClick(){
-        String Choice = getFirstMenuItem().getText();
+        final String choice = getFirstMenuItem().getText();
         getFirstMenuItem().click();
         buttonShowResult.click();
 
@@ -103,47 +105,43 @@ public class SearchPage {
 
         waitUntilPageLoad();
 
-        return Choice;
+        return choice;
     }
 
-    public void filterByCarType(){
+    public String filterByCarType(){
         inputCarBody.click();
 
-        Assertions.assertEquals(goToFirstPageAfterInputClick().toLowerCase(), new SalePage(driver).bodyType.getText().toLowerCase());
+        return goToFirstPageAfterInputClick().toLowerCase(Locale.ROOT);
     }
 
-    public void filterByTransmission(){
+    public String filterByTransmission(){
         inputTransmission.click();
 
+        return goToFirstPageAfterInputClick().toLowerCase(Locale.ROOT);
+
 //        Assertions.assertEquals(goToFirstPageAfterInputClick().toLowerCase(), (new SalePage(driver).transmission.getText().toLowerCase()));
-        Assertions.assertTrue(List.of(new String[]{"автоматическая", "автомат", "робот", "вариатор"}).contains(goToFirstPageAfterInputClick().toLowerCase()));
     }
 
-    public void filterByEngine(){
+    public String filterByEngine(){
         inputEngine.click();
 
-        String Choice = goToFirstPageAfterInputClick().toLowerCase();
-
-        String[] dataSplit = new SalePage(driver).engine.getText().toLowerCase().split("/");
-
-        Assertions.assertEquals(Choice, dataSplit[2].trim());
+        return goToFirstPageAfterInputClick().toLowerCase(Locale.ROOT);
     }
 
-    public void filterByDriveUnit(){
+    public String filterByDriveUnit(){
         inputDriveUnit.click();
 
-        String Choice = goToFirstPageAfterInputClick();
-
-        Assertions.assertTrue(Choice.equalsIgnoreCase(new SalePage(driver).drive.getText()));
+        return goToFirstPageAfterInputClick();
     }
 
-    public void filterByYearFrom(){
+    public int filterByYearFrom(){
         inputYearFrom.click();
-        Assertions.assertTrue(Integer.parseInt(goToFirstPageAfterInputClick()) <= Integer.parseInt(new SalePage(driver).yearOfManufacture.getText()));
+
+        return Integer.parseInt(goToFirstPageAfterInputClick());
     }
 
-    public void filterByMileageFrom(){
-        inputMileageFrom.sendKeys("200000");
+    public int filterByMileageFrom(final String mileage){
+        inputMileageFrom.sendKeys(mileage);
         buttonShowResult.click();
 
         waitUntilCarStartLoad();
@@ -155,21 +153,19 @@ public class SearchPage {
 
         waitUntilPageLoad();
 
-        String[] kmAgeSplit = new SalePage(driver).kmAge.getText().split(" ");
+        final String[] kmAgeSplit = new SalePage(driver).kmAge.getText().split(" ");
 
-        StringBuilder kmAge = new StringBuilder();
+        final StringBuilder kmAge = new StringBuilder();
 
         for(int i = 0; i < kmAgeSplit.length - 1; i++){
             kmAge.append(kmAgeSplit[i]);
         }
 
-        int kmAgeInt = Integer.parseInt(kmAge.toString());
-
-        Assertions.assertTrue(200000 <= kmAgeInt);
+        return Integer.parseInt(kmAge.toString());
     }
 
-    public void filterByPriceFrom(){
-        inputPriceFrom.sendKeys("2000000");
+    public int filterByPriceFrom(final String priceIn){
+        inputPriceFrom.sendKeys(priceIn);
         buttonShowResult.click();
 
         waitUntilCarStartLoad();
@@ -181,17 +177,15 @@ public class SearchPage {
 
         waitUntilPageLoad();
 
-        String[] priceSplit = new SalePage(driver).price.getText().split(" ");
+        final String[] priceSplit = new SalePage(driver).price.getText().split(" ");
 
-        StringBuilder price = new StringBuilder();
+        final StringBuilder price = new StringBuilder();
 
         for(int i = 0; i < priceSplit.length - 1; i++){
             price.append(priceSplit[i]);
         }
 
-        int priceInt = Integer.parseInt(price.toString());
-
-        Assertions.assertTrue(2000000 <= priceInt);
+        return Integer.parseInt(price.toString());
     }
 
     public SearchPage(final WebDriver driver) {
